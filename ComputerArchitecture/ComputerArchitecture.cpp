@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <cmath>
 #include <ctime>
+#include <omp.h>
 using namespace std;
 
 int main() {
@@ -12,7 +13,8 @@ int main() {
 	srand(time(NULL));
 	for (i = 0; i < N; i++)
 		arr[i] = rand() % N;
-	unsigned int start_time = clock();
+	double start_time, end_time;
+	start_time = omp_get_wtime();
 	averagevalue = arr[0];
 	for (i = 1; i < N; i++)
 		averagevalue += arr[i];
@@ -25,9 +27,9 @@ int main() {
 			difference = abs(arr[i] - averagevalue);
 		}
 	}
-	unsigned int end_time = clock();
+	end_time = omp_get_wtime();
 	cout << "»ндекс элемента, наиболее близкого к среднему значению всех элементов массива: " << j << endl;
-	cout << "—реднее значение всех элементов массива: "<< averagevalue << endl;
+	cout << "—реднее значение всех элементов массива: " << averagevalue << endl;
 	cout << "Ёлемент, наиболее близкий к нему: " << arr[j] << endl;
 	cout << "¬рем€ выполнени€ основного алгоритма программы: " << end_time - start_time << endl;
 	return 0;
