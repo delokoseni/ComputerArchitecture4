@@ -11,25 +11,23 @@ int main() {
 	int* arr, i, j, averagevalue, difference, N = 100000;
 	arr = new int[N];
 	srand(time(NULL));
-#pragma omp parallel
 	for (i = 0; i < N; i++)
 		arr[i] = rand() % N;
-	unsigned int start_time = clock();
+	double start_time, end_time;
+	start_time = omp_get_wtime();
 	averagevalue = arr[0];
-#pragma omp parallel
 	for (i = 1; i < N; i++)
 		averagevalue += arr[i];
 	averagevalue /= N;
 	difference = abs(arr[0] - averagevalue);
 	j = 0;
-#pragma omp parallel
 	for (i = 1; i < N; i++) {
 		if (abs(arr[i] - averagevalue) < difference) {
 			j = i;
 			difference = abs(arr[i] - averagevalue);
 		}
 	}
-	unsigned int end_time = clock();
+	end_time = omp_get_wtime();
 	cout << "»ндекс элемента, наиболее близкого к среднему значению всех элементов массива: " << j << endl;
 	cout << "—реднее значение всех элементов массива: " << averagevalue << endl;
 	cout << "Ёлемент, наиболее близкий к нему: " << arr[j] << endl;
