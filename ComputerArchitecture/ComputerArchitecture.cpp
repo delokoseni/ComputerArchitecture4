@@ -1,16 +1,16 @@
 #include <iostream>
 #include <Windows.h>
 #include <cmath>
-#include <ctime>
 #include <omp.h>
 using namespace std;
 
 int main() {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	int* arr, i, j, averagevalue, difference, N = 100000;
-	arr = new int[N];
 	srand(time(NULL));
+	int* arr, i, j, averagevalue, difference, N = 900000;
+	arr = new int[N];
+#pragma omp for ordered
 	for (i = 0; i < N; i++)
 		arr[i] = rand() % N;
 	double start_time, end_time;
