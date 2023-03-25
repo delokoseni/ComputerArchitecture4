@@ -16,15 +16,23 @@ int main() {
 	double start_time, end_time;
 	start_time = omp_get_wtime();
 	averagevalue = arr[0];
-	for (i = 1; i < N; i++)
-		averagevalue += arr[i];
+#pragma omp parallel reduction(+:averagevalue)
+	{
+#pragma omp for
+		for (i = 1; i < N; i++)
+			averagevalue += arr[i];
+	}
 	averagevalue /= N;
 	difference = abs(arr[0] - averagevalue);
 	j = 0;
-	for (i = 1; i < N; i++) {
-		if (abs(arr[i] - averagevalue) < difference) {
-			j = i;
-			difference = abs(arr[i] - averagevalue);
+#pragma omp parallel shared(difference, j)
+	{
+#pragma omp for
+		for (i = 1; i < N; i++) {
+			if (abs(arr[i] - averagevalue) < difference) {
+				j = i;
+				difference = abs(arr[i] - averagevalue);
+			}
 		}
 	}
 	end_time = omp_get_wtime();
